@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true }))
 const salesEndpoints = require('./routes/salesRoutes');
 app.use('/sales', salesEndpoints);
 
+const audienceEndpoints = require('./routes/audienceRoutes');
+app.use('/audience', audienceEndpoints);
 
 const PORT = process.env.PORT || 4000;
 

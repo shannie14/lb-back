@@ -64,4 +64,69 @@ const getTopMonthlySellers = async (req, res) => {
     }
 };
 
-module.exports = { getTopMonthlySellers };
+const getGrossByYearAndType = async (req, res) => {
+    try {
+        const grossByYearAndType = await Order.aggregate([
+            {
+                $group: {
+                    _id: {
+                        year: "$year",
+                        category: { $ifNull: ["$category", "n/a"] }
+                    },
+                    totalGross: { $sum: "$total" }
+                }
+            },
+            {
+                $sort: { "_id.year": 1, "_id.category": 1 }
+            },
+            {
+                $group: {
+                    _id: "$_id.year",
+                    categories: {
+                        $push: {
+                            category: "$_id.category",
+                            totalGross: "$totalGross"
+                        }
+                    },
+                    combinedTotalGross: { $sum: "$totalGross" }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    combinedTotalGross: 1,
+                    categories: {
+                        $map: {
+                            input: "$categories",
+                            as: "category",
+                            in: {
+                                category: "$$category.category",
+                                totalGross: "$$category.totalGross",
+                                percentage: {
+                                    $round: [
+                                        {
+                                            $multiply: [
+                                                { $divide: ["$$category.totalGross", "$combinedTotalGross"] },
+                                                100
+                                            ]
+                                        },
+                                        1 // Round to the nearest tenth
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            }
+        ]);
+
+        res.status(200).json(grossByYearAndType);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching gross by year and category", error });
+    }
+};
+
+module.exports = { getTopMonthlySellers, getGrossByYearAndType };
