@@ -1,0 +1,10 @@
+{
+    "socialAudience": {
+      "instagram": { "count": 65899, "female": 49.8, "male": 50.2 },
+      "facebook":  { "count": 35613, "female": 62.6, "male": 37.8 },
+      "youtube":   { "count": 51320, "female": 38.2, "male": 61.8 }
+    },
+    "purchasers":        487111,
+    "activeEmailList":   564367
+  }
+  

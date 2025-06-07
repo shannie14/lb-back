@@ -16,9 +16,8 @@ app.use(express.urlencoded({ extended: true }))
 
 // Endpoints//////////////////////////////////////////
 
-//dashboard app 
-const dashboardEndpoints = require('./routes/dashboardRoutes');
-app.use('/dashboard', dashboardEndpoints);
+const salesEndpoints = require('./routes/salesRoutes');
+app.use('/sales', salesEndpoints);
 
 
 const PORT = process.env.PORT || 4000;
