@@ -19,6 +19,11 @@ app.use(express.urlencoded({ extended: true }))
 const salesEndpoints = require('./routes/salesRoutes');
 app.use('/sales', salesEndpoints);
 
+const dailyEndpoints = require('./routes/dailyRoutes');
+app.use('/daily', dailyEndpoints);
+
+const audienceEndpoints = require('./routes/audienceRoutes');
+app.use('/audience', audienceEndpoints);
 
 const PORT = process.env.PORT || 4000;
 
